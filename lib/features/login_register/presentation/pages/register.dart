@@ -43,12 +43,18 @@ class _RegisterState extends State<Register> {
     final email = prefs.getString('user_email') ?? "";
     final password = prefs.getString('user_password') ?? "";
 
-    context.bloc<AuthBloc>().tryLoginEmail(email, password);
+    if (email != '' && password != '') {
+      context.bloc<AuthBloc>().tryLoginEmail(email, password);
+    }
 
-    final isLoggedIn = (context.bloc<AuthBloc>().state).isLoggedIn;
+    if ((context.bloc<AuthBloc>().state) is SuccessLoginState) {
+      final isLoggedIn = (context.bloc<AuthBloc>().state).isLoggedIn;
 
-    if (isLoggedIn) {
-      Navigator.pushReplacementNamed(context, '/home');
+      print('isLoggedIn: $isLoggedIn');
+
+      if (isLoggedIn) {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
     }
 
     setState(() {
@@ -137,7 +143,12 @@ class _RegisterState extends State<Register> {
         print("Validating");
         saveData();
         context.bloc<AuthBloc>().tryRegister(_name.text, _email.text, _address.text, _birthdate.text, _password.text);
-        checkErrors(context.bloc<AuthBloc>().state);
+        if (context.bloc<AuthBloc>().state is SuccessRegisterState){
+          Navigator.pushNamed(context, "/login");
+        }
+        if (context.bloc<AuthBloc>().state is FailedState){
+          checkErrors(context.bloc<AuthBloc>().state);
+        }
       } else {
         print('form invalid');
       }
@@ -168,8 +179,11 @@ class _RegisterState extends State<Register> {
                         content: Text(state.errorMessage),
                       ));
                     }
-                    if (state is SuccessState) {
+                    if (state is SuccessLoginState) {
                       Navigator.pushReplacementNamed(context, "/home");
+                    }
+                    if (state is SuccessRegisterState) {
+                      Navigator.pushReplacementNamed(context, "/register");
                     }
                   },
                   child: BlocBuilder<AuthBloc, AuthState>(
@@ -420,7 +434,7 @@ class SuccessWidget extends StatefulWidget {
     @required this.isAllFilled,
   }) : super(key: key);
 
-  final SuccessState state;
+  final SuccessLoginState state;
   final bool isAllFilled;
 
   @override

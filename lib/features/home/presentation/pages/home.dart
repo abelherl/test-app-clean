@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:division/division.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,7 +48,9 @@ class _HomeState extends State<Home> {
 
   void logout() {
     context.bloc<AuthBloc>().logout();
-    Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+    Timer(Duration(milliseconds: 500), () {
+      Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+    });
   }
 
   @override

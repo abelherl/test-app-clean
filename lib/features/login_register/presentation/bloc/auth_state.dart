@@ -13,12 +13,16 @@ class AuthInitial extends AuthState {
   const AuthInitial() : super(false);
 }
 
-class SuccessState extends AuthState {
+class SuccessLoginState extends AuthState {
   final UserEntity user;
-  const SuccessState(this.user) : super(true);
+  const SuccessLoginState(this.user) : super(true);
 
   @override
   List<Object> get props => [user];
+}
+
+class SuccessRegisterState extends AuthState {
+  const SuccessRegisterState() : super(true);
 }
 
 class FailedState extends AuthState {

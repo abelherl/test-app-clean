@@ -99,7 +99,7 @@ class _LoginFormState extends State<LoginForm> {
                   },
                 );
               }
-              if (state is SuccessState) {
+              if (state is SuccessLoginState) {
                 print('success');
                 Navigator.pushReplacementNamed(context, "/home");
               }

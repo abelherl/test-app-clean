@@ -18,7 +18,7 @@ class AuthBloc extends Cubit<AuthState> {
       if (phone == item.phone) {
         found = true;
         if (item.password == item.password) {
-          state = SuccessState(item);
+          state = SuccessLoginState(item);
         }
         else {
           state = FailedState("Wrong password", "");
@@ -56,7 +56,7 @@ class AuthBloc extends Cubit<AuthState> {
 
         UserEntity user = UserEntity(name: _name, email: _email, address: _address, password: _password);
 
-        state = SuccessState(user);
+        state = SuccessLoginState(user);
       }
       else {
         state = FailedState('Wrong password', 'password');
@@ -76,9 +76,8 @@ class AuthBloc extends Cubit<AuthState> {
       if (emailValidator.hasMatch(email)) {
         if (address.isNotEmpty) {
           if (birthdate.isNotEmpty) {
-            final user = UserEntity(name: name, password: password);
-            state = SuccessState(user);
-            userDummyList.add(user);
+            state = SuccessRegisterState();
+            print('success');
           }
         }
         else {
@@ -106,18 +105,23 @@ class AuthBloc extends Cubit<AuthState> {
     if (isLoggedIn) {
       final name = prefs.getString('user_name');
       UserEntity user = UserEntity(name: name,);
-      state = SuccessState(user);
+      state = SuccessLoginState(user);
     }
 
     emit(state);
   }
 
   void login() {
-    emit(SuccessState(UserEntity()));
+    emit(SuccessLoginState(UserEntity()));
   }
 
   void logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('user_name', '');
+    prefs.setString('user_email', '');
+    prefs.setString('user_address', '');
+    prefs.setString('user_birthdate', '');
+    prefs.setString('user_password', '');
     prefs.setBool('is_logged_in', false);
 
     emit(AuthInitial());
