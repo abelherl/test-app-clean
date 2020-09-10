@@ -188,233 +188,10 @@ class _RegisterState extends State<Register> {
                   },
                   child: BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
-//                      if (state is SuccessState) { return SuccessWidget(state: state, isAllFilled: isAllFilled); }
                       if (state is FailedState) {
-                        return Column(
-                          children: [
-                            TextFormField(
-                              validator: (text) => text.length < 1 ? "Field can't be empty" : null,
-                              onChanged: (_) => checkIfAllFilled(),
-                              controller: _name,
-                              style: TextStyle(color: Colors.black,),
-                              textAlignVertical: TextAlignVertical.center,
-                              decoration: InputDecoration(
-                                hintText: "Enter name",
-                                prefixIcon: Icon(Icons.person, color: checkErrorOnField("name") ? Colors.redAccent : Colors.grey[400]),
-                                border: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    width: 0.5,
-                                    color: isNameFieldError ? Colors.redAccent : Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            TextFormField(
-                              validator: (text) => text.length < 1 ? "Field can't be empty" : null,
-                              onChanged: (_) => checkIfAllFilled(),
-                              controller: _email,
-                              style: TextStyle(color: Colors.black,),
-                              textAlignVertical: TextAlignVertical.center,
-                              decoration: InputDecoration(
-                                hintText: "Enter email",
-                                prefixIcon: Icon(Icons.alternate_email, color: checkErrorOnField("email") ? Colors.redAccent : Colors.grey[400]),
-                                border: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    width: 0.5,
-                                    color: checkErrorOnField("email") ? Colors.redAccent : Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            TextFormField(
-                              validator: (text) => text.length < 1 ? "Field can't be empty" : null,
-                              onChanged: (_) => checkIfAllFilled(),
-                              controller: _address,
-                              style: TextStyle(color: Colors.black,),
-                              textAlignVertical: TextAlignVertical.center,
-                              decoration: InputDecoration(
-                                hintText: "Enter address",
-                                prefixIcon: Icon(Icons.home, color: checkErrorOnField("address") ? Colors.redAccent : Colors.grey[400]),
-                                border: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    width: 0.5,
-                                    color: checkErrorOnField("address") ? Colors.redAccent : Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            TextFormField(
-                              validator: (text) => text.length < 1 ? "Field can't be empty" : null,
-                              readOnly: true,
-                              onTap: () => _selectDate(context),
-                              onChanged: (_) => checkIfAllFilled(),
-                              controller: _birthdate,
-                              style: TextStyle(color: Colors.black,),
-                              textAlignVertical: TextAlignVertical.center,
-                              decoration: InputDecoration(
-                                hintText: "Enter birthdate",
-                                prefixIcon: Icon(Icons.date_range, color: checkErrorOnField("birthdate") ? Colors.redAccent : Colors.grey[400]),
-                                border: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    width: 0.5,
-                                    color: checkErrorOnField("birthdate") ? Colors.redAccent : Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            TextFormField(
-                              controller: _password,
-                              onChanged: (_) => checkIfAllFilled(),
-                              obscureText: true,
-                              style: TextStyle(color: Colors.black,),
-                              textAlignVertical: TextAlignVertical.center,
-                              decoration: InputDecoration(
-                                hintText: "Enter password",
-                                prefixIcon: Icon(Icons.lock, color: Colors.grey[400]),
-                                border: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 0.5,
-                                    )
-                                ),
-                              ),
-                            ),
-                            Parent(
-                              gesture: Gestures(),
-                              style: ParentStyle()
-                                ..height(40)
-                                ..width(MediaQuery.of(context).size.width)
-                                ..background.color(isAllFilled ? Colors.lightGreen[800] : Colors.grey[400])
-                                ..borderRadius(all: 5)
-                                ..ripple(isAllFilled ? true : false),
-                              child: FlatButton(
-                                onPressed: () {
-                                  validate();
-                                },
-                                child: Text(
-                                  "NEXT",
-                                  style: TextStyle(
-                                    color: isAllFilled ? Colors.white : Colors.black87,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            FlatButton(
-                              child: Text("Login instead"),
-                              onPressed: () => Navigator.pushNamed(context, "/login"),
-                            ),
-                          ],
-                        );
+                        return buildFailedLayout(context);
                       }
-                      return Column(
-                        children: [
-                          TextFormField(
-                            validator: (text) => text.length < 1 ? "Field can't be empty" : null,
-                            onChanged: (_) => checkIfAllFilled(),
-                            controller: _name,
-                            style: TextStyle(color: Colors.black,),
-                            textAlignVertical: TextAlignVertical.center,
-                            decoration: InputDecoration(
-                            hintText: "Enter name",
-                            prefixIcon: Icon(Icons.person, color: Colors.grey[400]),
-                            border: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 0.5,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TextFormField(
-                            validator: (text) => text.length < 1 ? "Field can't be empty" : null,
-                            onChanged: (_) => checkIfAllFilled(),
-                            controller: _email,
-                            style: TextStyle(color: Colors.black,),
-                            textAlignVertical: TextAlignVertical.center,
-                            decoration: InputDecoration(
-                              hintText: "Enter email",
-                              prefixIcon: Icon(Icons.alternate_email, color: Colors.grey[400]),
-                              border: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 0.5,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TextFormField(
-                            validator: (text) => text.length < 1 ? "Field can't be empty" : null,
-                            onChanged: (_) => checkIfAllFilled(),
-                            controller: _address,
-                            style: TextStyle(color: Colors.black,),
-                            textAlignVertical: TextAlignVertical.center,
-                            decoration: InputDecoration(
-                              hintText: "Enter address",
-                              prefixIcon: Icon(Icons.home, color: Colors.grey[400]),
-                              border: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 0.5,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TextFormField(
-                            validator: (text) => text.length < 1 ? "Field can't be empty" : null,
-                            readOnly: true,
-                            onTap: () => _selectDate(context),
-                            onChanged: (_) => checkIfAllFilled(),
-                            controller: _birthdate,
-                            style: TextStyle(color: Colors.black,),
-                            textAlignVertical: TextAlignVertical.center,
-                            decoration: InputDecoration(
-                              hintText: "Enter birthdate",
-                              prefixIcon: Icon(Icons.date_range, color: Colors.grey[400]),
-                              border: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 0.5,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TextFormField(
-                            controller: _password,
-                            onChanged: (_) => checkIfAllFilled(),
-                            obscureText: true,
-                            style: TextStyle(color: Colors.black,),
-                            textAlignVertical: TextAlignVertical.center,
-                            decoration: InputDecoration(
-                              hintText: "Enter password",
-                              prefixIcon: Icon(Icons.lock, color: Colors.grey[400]),
-                              border: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    width: 0.5,
-                                  )
-                              ),
-                            ),
-                          ),
-                          Parent(
-                            gesture: Gestures(),
-                            style: ParentStyle()
-                              ..height(40)
-                              ..width(MediaQuery.of(context).size.width)
-                              ..background.color(isAllFilled ? Colors.lightGreen[800] : Colors.grey[400])
-                              ..borderRadius(all: 5)
-                              ..ripple(isAllFilled ? true : false),
-                            child: FlatButton(
-                              onPressed: () {
-                                validate();
-                              },
-                              child: Text(
-                                "NEXT",
-                                style: TextStyle(
-                                  color: isAllFilled ? Colors.white : Colors.black87,
-                                ),
-                              ),
-                            ),
-                          ),
-                          FlatButton(
-                            child: Text("Login instead"),
-                            onPressed: () => Navigator.pushNamed(context, "/login"),
-                          ),
-                        ],
-                      );
+                      return buildInitialLayout(context);
                     },
                   ),
                 ),
@@ -425,53 +202,234 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
-}
 
-class SuccessWidget extends StatefulWidget {
-  const SuccessWidget({
-    Key key,
-    @required this.state,
-    @required this.isAllFilled,
-  }) : super(key: key);
-
-  final SuccessLoginState state;
-  final bool isAllFilled;
-
-  @override
-  _SuccessWidgetState createState() => _SuccessWidgetState();
-}
-
-class _SuccessWidgetState extends State<SuccessWidget> {
-
-  void saveData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('is_logged_in', false);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    saveData();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Parent(
-      gesture: Gestures()
-        ..onTap(() { context.bloc<AuthBloc>().logout(); }),
-      style: ParentStyle()
-        ..height(40)
-        ..width(MediaQuery.of(context).size.width)
-        ..background.color(Colors.grey[400])
-        ..borderRadius(all: 5),
-      child: FlatButton(
-        child: Text(
-          "LOGGED IN WITH USER NAMED ${widget.state.user.name}",
-          style: TextStyle(
-            color: widget.isAllFilled ? Colors.white : Colors.black87,
+  Column buildInitialLayout(BuildContext context) {
+    return Column(
+      children: [
+        TextFormField(
+          validator: (text) => text.length < 1 ? "Field can't be empty" : null,
+          onChanged: (_) => checkIfAllFilled(),
+          controller: _name,
+          style: TextStyle(color: Colors.black,),
+          textAlignVertical: TextAlignVertical.center,
+          decoration: InputDecoration(
+          hintText: "Enter name",
+          prefixIcon: Icon(Icons.person, color: Colors.grey[400]),
+          border: UnderlineInputBorder(
+              borderSide: BorderSide(
+                width: 0.5,
+              ),
+            ),
           ),
         ),
-      ),
+        TextFormField(
+          validator: (text) => text.length < 1 ? "Field can't be empty" : null,
+          onChanged: (_) => checkIfAllFilled(),
+          controller: _email,
+          style: TextStyle(color: Colors.black,),
+          textAlignVertical: TextAlignVertical.center,
+          decoration: InputDecoration(
+            hintText: "Enter email",
+            prefixIcon: Icon(Icons.alternate_email, color: Colors.grey[400]),
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(
+                width: 0.5,
+              ),
+            ),
+          ),
+        ),
+        TextFormField(
+          validator: (text) => text.length < 1 ? "Field can't be empty" : null,
+          onChanged: (_) => checkIfAllFilled(),
+          controller: _address,
+          style: TextStyle(color: Colors.black,),
+          textAlignVertical: TextAlignVertical.center,
+          decoration: InputDecoration(
+            hintText: "Enter address",
+            prefixIcon: Icon(Icons.home, color: Colors.grey[400]),
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(
+                width: 0.5,
+              ),
+            ),
+          ),
+        ),
+        TextFormField(
+          validator: (text) => text.length < 1 ? "Field can't be empty" : null,
+          readOnly: true,
+          onTap: () => _selectDate(context),
+          onChanged: (_) => checkIfAllFilled(),
+          controller: _birthdate,
+          style: TextStyle(color: Colors.black,),
+          textAlignVertical: TextAlignVertical.center,
+          decoration: InputDecoration(
+            hintText: "Enter birthdate",
+            prefixIcon: Icon(Icons.date_range, color: Colors.grey[400]),
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(
+                width: 0.5,
+              ),
+            ),
+          ),
+        ),
+        TextFormField(
+          controller: _password,
+          onChanged: (_) => checkIfAllFilled(),
+          obscureText: true,
+          style: TextStyle(color: Colors.black,),
+          textAlignVertical: TextAlignVertical.center,
+          decoration: InputDecoration(
+            hintText: "Enter password",
+            prefixIcon: Icon(Icons.lock, color: Colors.grey[400]),
+            border: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  width: 0.5,
+                )
+            ),
+          ),
+        ),
+        Parent(
+          gesture: Gestures(),
+          style: ParentStyle()
+            ..height(40)
+            ..width(MediaQuery.of(context).size.width)
+            ..background.color(isAllFilled ? Colors.lightGreen[800] : Colors.grey[400])
+            ..borderRadius(all: 5)
+            ..ripple(isAllFilled ? true : false),
+          child: FlatButton(
+            onPressed: () {
+              validate();
+            },
+            child: Text(
+              "NEXT",
+              style: TextStyle(
+                color: isAllFilled ? Colors.white : Colors.black87,
+              ),
+            ),
+          ),
+        ),
+        FlatButton(
+          child: Text("Login instead"),
+          onPressed: () => Navigator.pushNamed(context, "/login"),
+        ),
+      ],
+    );
+  }
+
+  Column buildFailedLayout(BuildContext context) {
+    return Column(
+      children: [
+        TextFormField(
+          validator: (text) => text.length < 1 ? "Field can't be empty" : null,
+          onChanged: (_) => checkIfAllFilled(),
+          controller: _name,
+          style: TextStyle(color: Colors.black,),
+          textAlignVertical: TextAlignVertical.center,
+          decoration: InputDecoration(
+            hintText: "Enter name",
+            prefixIcon: Icon(Icons.person, color: checkErrorOnField("name") ? Colors.redAccent : Colors.grey[400]),
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(
+                width: 0.5,
+                color: isNameFieldError ? Colors.redAccent : Colors.grey,
+              ),
+            ),
+          ),
+        ),
+        TextFormField(
+          validator: (text) => text.length < 1 ? "Field can't be empty" : null,
+          onChanged: (_) => checkIfAllFilled(),
+          controller: _email,
+          style: TextStyle(color: Colors.black,),
+          textAlignVertical: TextAlignVertical.center,
+          decoration: InputDecoration(
+            hintText: "Enter email",
+            prefixIcon: Icon(Icons.alternate_email, color: checkErrorOnField("email") ? Colors.redAccent : Colors.grey[400]),
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(
+                width: 0.5,
+                color: checkErrorOnField("email") ? Colors.redAccent : Colors.grey,
+              ),
+            ),
+          ),
+        ),
+        TextFormField(
+          validator: (text) => text.length < 1 ? "Field can't be empty" : null,
+          onChanged: (_) => checkIfAllFilled(),
+          controller: _address,
+          style: TextStyle(color: Colors.black,),
+          textAlignVertical: TextAlignVertical.center,
+          decoration: InputDecoration(
+            hintText: "Enter address",
+            prefixIcon: Icon(Icons.home, color: checkErrorOnField("address") ? Colors.redAccent : Colors.grey[400]),
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(
+                width: 0.5,
+                color: checkErrorOnField("address") ? Colors.redAccent : Colors.grey,
+              ),
+            ),
+          ),
+        ),
+        TextFormField(
+          validator: (text) => text.length < 1 ? "Field can't be empty" : null,
+          readOnly: true,
+          onTap: () => _selectDate(context),
+          onChanged: (_) => checkIfAllFilled(),
+          controller: _birthdate,
+          style: TextStyle(color: Colors.black,),
+          textAlignVertical: TextAlignVertical.center,
+          decoration: InputDecoration(
+            hintText: "Enter birthdate",
+            prefixIcon: Icon(Icons.date_range, color: checkErrorOnField("birthdate") ? Colors.redAccent : Colors.grey[400]),
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(
+                width: 0.5,
+                color: checkErrorOnField("birthdate") ? Colors.redAccent : Colors.grey,
+              ),
+            ),
+          ),
+        ),
+        TextFormField(
+          controller: _password,
+          onChanged: (_) => checkIfAllFilled(),
+          obscureText: true,
+          style: TextStyle(color: Colors.black,),
+          textAlignVertical: TextAlignVertical.center,
+          decoration: InputDecoration(
+            hintText: "Enter password",
+            prefixIcon: Icon(Icons.lock, color: Colors.grey[400]),
+            border: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  width: 0.5,
+                )
+            ),
+          ),
+        ),
+        Parent(
+          gesture: Gestures(),
+          style: ParentStyle()
+            ..height(40)
+            ..width(MediaQuery.of(context).size.width)
+            ..background.color(isAllFilled ? Colors.lightGreen[800] : Colors.grey[400])
+            ..borderRadius(all: 5)
+            ..ripple(isAllFilled ? true : false),
+          child: FlatButton(
+            onPressed: () {
+              validate();
+            },
+            child: Text(
+              "NEXT",
+              style: TextStyle(
+                color: isAllFilled ? Colors.white : Colors.black87,
+              ),
+            ),
+          ),
+        ),
+        FlatButton(
+          child: Text("Login instead"),
+          onPressed: () => Navigator.pushNamed(context, "/login"),
+        ),
+      ],
     );
   }
 }
