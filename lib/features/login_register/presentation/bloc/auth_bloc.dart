@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_app_clean/core/data/datasources/user_local_data_source.dart';
 import 'package:test_app_clean/core/data/models/user_model.dart';
 import 'package:test_app_clean/core/domain/entities/user.dart';
+import 'package:test_app_clean/features/login_register/data/repositories/user_repository_impl.dart';
 
 part 'auth_state.dart';
 
@@ -11,8 +12,10 @@ class AuthBloc extends Cubit<AuthState> {
   AuthBloc() : super(AuthInitial());
 
   void tryLoginEmail(String email, String password) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final user = await UserLocalDataSource(prefs).getRegisteredUser();
+    final prefs = await SharedPreferences.getInstance();
+    final localDataSource = UserLocalDataSource(prefs);
+    final repository = UserRepositoryImpl(localDataSource: localDataSource);
+    final user = await repository.getRegisteredUser();
     AuthState state;
 
     print('$email ${user.email}');
@@ -22,7 +25,7 @@ class AuthBloc extends Cubit<AuthState> {
       print('email');
       if (password == user.password) {
         print('password');
-        UserLocalDataSource(prefs).login(user);
+        repository.login(user);
         state = SuccessLoginState(user);
       }
       else {
@@ -35,6 +38,9 @@ class AuthBloc extends Cubit<AuthState> {
 
   void tryRegister(String name, String email, String address, String birthdate, String password) async {
     AuthState state;
+    final prefs = await SharedPreferences.getInstance();
+    final localDataSource = UserLocalDataSource(prefs);
+    final repository = UserRepositoryImpl(localDataSource: localDataSource);
     final emailValidator = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
     print("Registering");
@@ -43,9 +49,8 @@ class AuthBloc extends Cubit<AuthState> {
       if (emailValidator.hasMatch(email)) {
         if (address.isNotEmpty) {
           if (birthdate.isNotEmpty) {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
             UserModel user = UserModel(name: name, email: email, address: address, birthdate: birthdate, password: password);
-            await UserLocalDataSource(prefs).register(user);
+            repository.register(user);
             state = SuccessRegisterState();
             print('success');
           }
@@ -65,13 +70,15 @@ class AuthBloc extends Cubit<AuthState> {
   }
 
   void isLoggedIn() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final isLoggedIn = prefs.getBool('is_logged_in');
+    final prefs = await SharedPreferences.getInstance();
+    final localDataSource = UserLocalDataSource(prefs);
+    final repository = UserRepositoryImpl(localDataSource: localDataSource);
+    final isLoggedIn = await repository.isLoggedIn();
     AuthState state = AuthInitial();
 
     if (isLoggedIn) {
-      UserModel user = await UserLocalDataSource(prefs).getLoggedInUser();
-      UserLocalDataSource(prefs).login(user);
+      UserModel user = await repository.getLoggedInUser();
+      repository.login(user);
       state = SuccessLoginState(user);
     }
 
@@ -79,8 +86,10 @@ class AuthBloc extends Cubit<AuthState> {
   }
 
   void login() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final user = await UserLocalDataSource(prefs).getLoggedInUser();
+    final prefs = await SharedPreferences.getInstance();
+    final localDataSource = UserLocalDataSource(prefs);
+    final repository = UserRepositoryImpl(localDataSource: localDataSource);
+    final user = await repository.getLoggedInUser();
     AuthState state = AuthInitial();
 
     if (user.email != '') {
@@ -91,8 +100,10 @@ class AuthBloc extends Cubit<AuthState> {
   }
 
   void logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await UserLocalDataSource(prefs).logout();
+    final prefs = await SharedPreferences.getInstance();
+    final localDataSource = UserLocalDataSource(prefs);
+    final repository = UserRepositoryImpl(localDataSource: localDataSource);
+    await repository.logout();
 
     emit(AuthInitial());
   }

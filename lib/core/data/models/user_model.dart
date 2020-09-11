@@ -1,6 +1,6 @@
 import 'package:test_app_clean/core/domain/entities/user.dart';
 
-class UserModel extends UserEntity {
+class UserModel extends User {
   UserModel({
     String name,
     String email,

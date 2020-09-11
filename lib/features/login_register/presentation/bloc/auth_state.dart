@@ -14,7 +14,7 @@ class AuthInitial extends AuthState {
 }
 
 class SuccessLoginState extends AuthState {
-  final UserEntity user;
+  final User user;
   const SuccessLoginState(this.user) : super(true);
 
   @override
