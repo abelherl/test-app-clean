@@ -1,7 +1,9 @@
 import 'package:division/division.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app_clean/core/data/datasources/user_local_data_source.dart';
 import 'package:test_app_clean/features/login_register/presentation/bloc/auth_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -38,10 +40,6 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void initState() {
     super.initState();
-    context.bloc<AuthBloc>().login();
-    final isLoggedIn = (context.bloc<AuthBloc>().state).isLoggedIn;
-    print(isLoggedIn);
-//    context.bloc<AuthBloc>().isLoggedIn();
   }
 
   @override

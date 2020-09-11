@@ -81,6 +81,7 @@ class _HomeState extends State<Home> {
                           style: ParentStyle()
                           ..height(100)
                           ..width(100)
+                          ..background.color(Colors.white)
                           ..elevation(15)
                           ..borderRadius(all: 50)
                           ..ripple(true),
@@ -107,27 +108,11 @@ class _HomeState extends State<Home> {
                   ..width(double.infinity)
                   ..alignment.center(),
               ),
-              Txt(
-                'TAP OR HOLD',
-                style: TxtStyle()
-                  ..textColor(Colors.black54)
-                  ..margin(left: 15, top: 20, right: 15, bottom: 10)
-                  ..textAlign.left()
-                  ..width(double.infinity)
-                  ..letterSpacing(2)
-                  ..fontSize(12),
-              ),
-              SettingsItem(Icons.location_on, hex('#8D7AEE'), 'Address', 'Ensure your harvesting address'),
-              SettingsItem(Icons.lock, hex('#F468B7'), 'Privacy', 'System permission change'),
-              SettingsItem(Icons.menu, hex('#FEC85C'), 'General', 'Basic functional settings'),
-              SettingsItem(Icons.notifications, hex('#5FD0D3'), 'Notifications', 'Take over the news in time'),
-              SettingsItem(Icons.question_answer, hex('#BFACAA'), 'Support', 'We are here to help'),
               Parent(
                 style: ParentStyle()
-                  ..height(40)
+                  ..height(50)
                   ..width(MediaQuery.of(context).size.width)
-                  ..background.color(Colors.red[400])
-                  ..borderRadius(all: 5),
+                  ..background.color(Colors.red[400]),
                 child: FlatButton(
                   onPressed: () {
                     logout();

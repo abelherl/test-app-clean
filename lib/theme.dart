@@ -11,12 +11,10 @@ ThemeData mainTheme() {
       headline5: base.headline5.copyWith(
         fontFamily: fontFamily,
         fontWeight: FontWeight.w700,
-        fontSize: 16,
         color: Colors.black87
       ),
       subtitle1: base.subtitle1.copyWith(
         fontFamily: fontFamily,
-        fontSize: 13,
         color: Colors.black38
       )
     );

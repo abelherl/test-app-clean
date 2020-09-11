@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_app_clean/core/data/datasources/user_local_data_source.dart';
 import 'package:test_app_clean/features/login_register/presentation/bloc/auth_bloc.dart';
 
 class Register extends StatefulWidget {
@@ -37,14 +38,10 @@ class _RegisterState extends State<Register> {
 
   void loadData() async {
     print('Loading data');
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    final email = prefs.getString('user_email') ?? "";
-    final password = prefs.getString('user_password') ?? "";
-
-    if (email != '' && password != '') {
-      context.bloc<AuthBloc>().tryLoginEmail(email, password);
+    if (await UserLocalDataSource(prefs).isLoggedIn()) {
+      context.bloc<AuthBloc>().login();
     }
 
     if ((context.bloc<AuthBloc>().state) is SuccessLoginState) {
@@ -56,14 +53,6 @@ class _RegisterState extends State<Register> {
         Navigator.pushReplacementNamed(context, '/home');
       }
     }
-
-    setState(() {
-      _name.text = prefs.getString('user_name') ?? "";
-      _email.text = prefs.getString('user_email') ?? "";
-      _address.text = prefs.getString('user_address') ?? "";
-      _birthdate.text = prefs.getString('user_birthdate') ?? "";
-      _password.text = prefs.getString('user_password') ?? "";
-    });
   }
 
   Future<void> _selectDate(BuildContext context) async {
